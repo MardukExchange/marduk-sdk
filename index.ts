@@ -1,4 +1,7 @@
 import axios from 'axios';
+import {BroadcastTransactionResponse, GetContractsResponse, GetFeeEstimationResponse, GetNodesResponse, GetPairsResponse,
+  GetSwapStatusResponse,
+  GetSwapTransactionResponse, GetTimeoutResponse, GetTransactionResponse } from './types';
 
 const API_URL = 'https://api.marduk.exchange:9001';
 
@@ -11,7 +14,7 @@ export const getVersion = () => {
  * limits and fees can be expected when creating a new swap.
  * To get that kind of information the following call is used
  */
-export const getRates = () : Promise<object> =>  {
+export const getPairs = () : Promise<GetPairsResponse> =>  {
   return new Promise((resolve, reject) => {
     axios
       .get(`${API_URL}/getpairs`)
@@ -25,7 +28,7 @@ export const getRates = () : Promise<object> =>  {
 /**
  * This endpoint allows you to query the node public keys and URIs of the Lightning nodes run by Boltz.
  */
-export const getNodes = (): Promise<object> =>  {
+export const getNodes = (): Promise<GetNodesResponse> =>  {
   return new Promise((resolve, reject) => {
     axios
       .get(`${API_URL}/getnodes`)
@@ -40,7 +43,7 @@ export const getNodes = (): Promise<object> =>  {
  * Marduk Swaps have different timeouts for each pair.
  * This endpoint allows querying those timeouts denominated in blocks of the base and quote chain.
  */
-export const getTimeouts = (): Promise<object> =>  {
+export const getTimeouts = (): Promise<GetTimeoutResponse> =>  {
   return new Promise((resolve, reject) => {
     axios
       .get(`${API_URL}/gettimeouts`)
@@ -54,7 +57,7 @@ export const getTimeouts = (): Promise<object> =>  {
 /**
  * To query the addresses of the contracts Boltz uses on account based chains this endpoint must be queried.
  */
-export const getContracts = (): Promise<object> =>  {
+export const getContracts = (): Promise<GetContractsResponse> =>  {
   return new Promise((resolve, reject) => {
     axios
       .get(`${API_URL}/getcontracts`)
@@ -74,7 +77,7 @@ export const getContracts = (): Promise<object> =>  {
  * If the instance supports Ether or ERC20 tokens, only ETH will be in the response.
  * This value is for the Ethereum chain and not the Ether asset and denominated in GWEI.
  */
-export const getFeeEstimation = () :  Promise<object> =>  {
+export const getFeeEstimation = () :  Promise<GetFeeEstimationResponse> =>  {
   return new Promise((resolve, reject) => {
     axios
       .get(`${API_URL}/getfeeestimation`)
@@ -96,7 +99,7 @@ export const getFeeEstimation = () :  Promise<object> =>  {
  * @param currency
  * @param transactionId
  */
-export const getTransaction = (currency: string, transactionId: string): Promise<object> =>  {
+export const getTransaction = (currency: string, transactionId: string): Promise<GetTransactionResponse> =>  {
   return new Promise((resolve, reject) => {
     axios
       .post(`${API_URL}/gettransaction`, {
@@ -114,7 +117,7 @@ export const getTransaction = (currency: string, transactionId: string): Promise
  * Requests querying the lockup transactions on UTXO based chains of Submarine Swaps have to be POST and contain one argument in its JSON encoded body:
  * @param id
  */
-export const getSwaptransaction = (id: string) => {
+export const getSwaptransaction = (id: string): Promise<GetSwapTransactionResponse> => {
   return axios.post(`${API_URL}/getswaptransaction`, {
     id,
   });
@@ -128,7 +131,7 @@ export const getSwaptransaction = (id: string) => {
  * @param currency
  * @param transactionHex
  */
-export const broadcastTransaction = (currency: string, transactionHex: string) => {
+export const broadcastTransaction = (currency: string, transactionHex: string): Promise<BroadcastTransactionResponse> => {
   return axios.post(`${API_URL}/broadcasttransaction`, {
     currency,
     transactionHex,
@@ -144,7 +147,7 @@ export const broadcastTransaction = (currency: string, transactionHex: string) =
  * Requests querying the status of a swap have to be POST and contain a single value in its JSON encoded body:
  * @param id
  */
-export const getSwapStatus = (id: string) => {
+export const getSwapStatus = (id: string): Promise<GetSwapStatusResponse> => {
   return axios.post(`${API_URL}/swapstatus`, {
     id,
   });
@@ -174,7 +177,7 @@ export const createSwap = (currency: string, amount: string, cb: string) :  Prom
  * you need to use this endpoint to figure out what the amount of the invoice you set should be.
  * Send a POST request with a JSON encoded body with this value:
  */
-export const getSwapRates= () :  Promise<object> =>  {
+export const getSwapRates = () :  Promise<object> =>  {
   return new Promise((resolve, reject) => {
     axios
       .get(`${API_URL}/swaprates`)
