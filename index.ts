@@ -1,11 +1,14 @@
 import axios from 'axios';
-import {BroadcastTransactionResponse, GetContractsResponse, GetFeeEstimationResponse, GetNodesResponse, GetPairsResponse,
+import {BroadcastTransactionResponse,
+  CreateSwapRequest,
+  CreateSwapResponse, GetContractsResponse, GetFeeEstimationResponse, GetNodesResponse, GetPairsResponse,
   GetSwapStatusResponse,
-  GetSwapTransactionResponse, GetTimeoutResponse, GetTransactionResponse } from './types';
+  GetSwapTransactionResponse, GetTimeoutResponse, GetTransactionResponse, SetInvoiceResponse } from './types';
 
 const API_URL = 'https://api.marduk.exchange:9001';
 
-export const getVersion = () => {
+
+export const getVersion = (): Promise<{version: string}> => {
   return axios.get(`${API_URL}/version`);
 };
 
@@ -161,10 +164,9 @@ export const getSwapStatus = (id: string): Promise<GetSwapStatusResponse> => {
  * @param amount
  * @param cb
  */
-export const createSwap = (currency: string, amount: string, cb: string) :  Promise<object> =>  {
+export const createSwap = (createSwapRequest : CreateSwapRequest) :  Promise<CreateSwapResponse> =>  {
   return new Promise((resolve, reject) => {
-    axios
-      .get(`${API_URL}/createswap`)
+    axios.post(`${API_URL}/createswap`, createSwapRequest)
       .then((resp) => {
         resolve(resp.data);
       })
@@ -177,10 +179,9 @@ export const createSwap = (currency: string, amount: string, cb: string) :  Prom
  * you need to use this endpoint to figure out what the amount of the invoice you set should be.
  * Send a POST request with a JSON encoded body with this value:
  */
-export const getSwapRates = () :  Promise<object> =>  {
+export const getSwapRates = (id: string) :  Promise<{invoiceAmount : number}> =>  {
   return new Promise((resolve, reject) => {
-    axios
-      .get(`${API_URL}/swaprates`)
+    axios.post(`${API_URL}/swaprates`, id)
       .then((resp) => {
         resolve(resp.data);
       })
@@ -197,7 +198,7 @@ export const getSwapRates = () :  Promise<object> =>  {
  * @param id
  * @param invoice
  */
-export const setInvoice = (id: string, invoice: string) :  Promise<object> =>  {
+export const setInvoice = (id: string, invoice: string) :  Promise<SetInvoiceResponse> =>  {
   return new Promise((resolve, reject) => {
     axios
       .post(`${API_URL}/setinvoice`, {
