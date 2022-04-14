@@ -17,5 +17,9 @@
         "@typescript-eslint"
     ],
     "rules": {
-    }
+    },
+    "eslint.workingDirectories": [
+        "./src",
+        "./example"
+    ]
 }

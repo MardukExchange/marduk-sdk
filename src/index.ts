@@ -49,7 +49,7 @@ export const getNodes = (): Promise<GetNodesResponse> =>  {
 export const getTimeouts = (): Promise<GetTimeoutResponse> =>  {
   return new Promise((resolve, reject) => {
     axios
-      .get(`${API_URL}/gettimeouts`)
+      .get(`${API_URL}/timeouts`)
       .then((resp) => {
         resolve(resp.data);
       })
@@ -122,7 +122,7 @@ export const getTransaction = (currency: string, transactionId: string): Promise
  */
 export const getSwaptransaction = (id: string): Promise<GetSwapTransactionResponse> => {
   return axios.post(`${API_URL}/getswaptransaction`, {
-    id,
+    id: id,
   });
 };
 
