@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "marduk-sdk": "file:.."
+    "marduk-sdk": "^0.1.1"
   }
 }
